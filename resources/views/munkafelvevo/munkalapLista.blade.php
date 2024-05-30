@@ -25,14 +25,6 @@
         </div>
 </form>
 
-<p>
-    @if ($search)
-        Eredmények erre: {{ $search }}
-    @else
-        Minden munkalap
-    @endif
-</p>
-
 
     <table class="table table-light table-striped text-center">
         <thead>
@@ -66,7 +58,7 @@
                     @if ($munkalap->lezart == 0)
                         <td><a href = {{ route('modosit', ['id' => $munkalap->id]) }}>Módosítás</a></td>
                     @else
-                        <td><h6 style="color:red">LEZÁRT</h6></td>
+                        <td>  Nyomtatas </td> 
                     @endif
                 </tr>
             @endforeach

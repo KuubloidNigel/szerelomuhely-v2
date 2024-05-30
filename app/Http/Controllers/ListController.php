@@ -7,6 +7,8 @@ use App\Models\Munkalap;
 use App\Models\Gepjarmu;
 use App\Models\Munkafelvevo;
 use App\Models\Tulajdonos;
+use Illuminate\Support\Facades\Auth;
+
 
 class ListController extends Controller
 {
@@ -103,4 +105,23 @@ class ListController extends Controller
 
         return redirect()->route('lista')->with('success', 'Munkalap sikeresen módosítva.');
     }
+
+
+    public function worklist(Request $request){
+        $azonosito = Auth::user()->azonosito;
+
+        if($azonosito != "ADMIN!")
+        $munkalapok = Munkalap::query()->where('szerelo_azonosito', $azonosito)->get();
+        else
+        $munkalapok = Munkalap::query()->get();
+
+
+        return view('szerelo.munkaListazas', compact('munkalapok'));  
+    } 
+
+    public function bovito(Request $request){
+        
+    }
+
+
 }

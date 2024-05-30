@@ -20,7 +20,7 @@
                     <p>Welcome, ADMIN!<p>
                     <h1>Szerelő Oldalai:</h1>
                     <ul>
-                    <li><a href="{{ URL('/MunkaListazas') }}">Munkalapjaim listázása</a></li>
+                    <li><a href="{{ route('worklist', ['azonosito' => Auth::user()->azonosito]) }}">Munkalapjaim listázása</a></li>
                     </ul>
                     <h1>Munkafelvevő Oldalai:</h1>
                     <ul>
@@ -30,7 +30,7 @@
                 @elseif (Auth::user()->role == 'szerelo')
                     <p>Welcome, Szerelo!</p> 
                     <ul>
-                    <li><a href="{{ URL('/MunkaListazas') }}">Munkalapjaim listázása</a></li>
+                    <li><a href="{{ route('worklist', ['azonosito' => Auth::user()->azonosito]) }}">Munkalapjaim listázása</a></li>
                     </ul>
                 @elseif (Auth::user()->role == 'munkafelvevo')
                     <p>Welcome, Munkafelvevo!</p>
