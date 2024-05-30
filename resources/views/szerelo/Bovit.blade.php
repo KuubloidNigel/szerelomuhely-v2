@@ -19,6 +19,10 @@
         <h1>Alkatrész</h1>
     @endif
 
+
+        <input style="display: none;" value = {{$fajta}} name = 'fajta'>
+        <input style="display: none;" value = {{$munkalapID}} name = 'munkalapID'>
+
     <div class="form-floating mb-3">
         <input type="text" class="form-control @error('mennyiseg') is-invalid @enderror" id="floatingInput10" name="mennyiseg" value="{{ old('mennyiseg') }}">
         @if($fajta != "munka")<label for="floatingInput10">Mennyiség</label>

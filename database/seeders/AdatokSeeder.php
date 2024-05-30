@@ -222,9 +222,9 @@ class AdatokSeeder extends Seeder
         
         //Munkafolyamatok
         Munkafolyamatok::create(['nev' => 'Vizsgáztatás']);
-        Munkafolyamatok::create(['nev' => 'Környezetvédelmi kártya kiállítás']);
-        Munkafolyamatok::create(['nev' => 'Éves átvizsgálás']);
-        Munkafolyamatok::create(['nev' => 'Rendkívüli átvizsgálás']);
+        Munkafolyamatok::create(['nev' => 'KörnyezetvédelmiKártyaKiállítás']);
+        Munkafolyamatok::create(['nev' => 'ÉvesÁtvizsgálás']);
+        Munkafolyamatok::create(['nev' => 'RendkívüliÁtvizsgálás']);
         Munkafolyamatok::create(['nev' => 'Olajcsere']);
         
         //Munkafolyamat

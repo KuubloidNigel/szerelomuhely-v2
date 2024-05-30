@@ -40,3 +40,7 @@ function addPartProcess() {
     `;
     workProcessesDiv.appendChild(newProcessDiv);
 }
+
+function print() {
+    window.print();
+}

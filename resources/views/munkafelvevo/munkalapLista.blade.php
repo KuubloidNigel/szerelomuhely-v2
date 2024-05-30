@@ -58,7 +58,7 @@
                     @if ($munkalap->lezart == 0)
                         <td><a href = {{ route('modosit', ['id' => $munkalap->id]) }}>Módosítás</a></td>
                     @else
-                        <td>  Nyomtatas </td> 
+                        <td><a href="{{ route('megtekint', ['id' => $munkalap->id]) }}">Megtekintés</a></td> 
                     @endif
                 </tr>
             @endforeach

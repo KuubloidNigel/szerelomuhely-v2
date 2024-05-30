@@ -158,14 +158,40 @@ class ListController extends Controller
             'mennyiseg' => 'required|string'
         ]);
 
+        $munkalapID = $request->munkalapID;
+
         if($request->fajta == 'anyag'){
-            Anyag::query()->get('nev');
+            $yes = Anyag::query()->where('nev', '=', $request->cucc)->pluck('id')->first();
+            MunkalapAnyagok::query()->insert(['munkalap_id' => $munkalapID, 'anyag_id' => $yes, 'mennyiseg' => $request->mennyiseg, 'created_at'=> now(),'updated_at' =>now()]);
         }else if($request->fajta == 'munka'){
-            Munkafolyamatok::query()->get('nev');
+            $yes = Munkafolyamatok::query()->where('nev', '=', $request->cucc)->pluck('id')->first();
+            Munkafolyamat::query()->insert(['munkalap_id' => $munkalapID, 'munkafolyamatok_id' => $yes, 'idotartam' => $request->mennyiseg, 'created_at'=> now(),'updated_at' =>now()]);
         }else{
-            Alkatresz::query()->get('nev');
+            $yes = Alkatresz::query()->where('nev', '=', $request->cucc)->pluck('id')->first();
+            MunkalapAlkatresz::query()->insert(['munkalap_id' => $munkalapID, 'alkatresz_id' => $yes, 'mennyiseg' => $request->mennyiseg, 'created_at'=> now(),'updated_at' =>now()]);
         }
+
+        return redirect()->route('worklist', ['azonosito' => Auth::user()->azonosito]);
+
+
     }
+
+
+    
+    public function megtekint(Request $request){
+        $id = $request->id;
+
+        $munkalap = Munkalap::findOrFail($id);
+
+        $munkalap = Munkalap::where('id', $id)->first(['id','munkafelvevo_azonosito', 'szerelo_azonosito', 'gepjarmu_rendszam', 'lezart', 'osszar', 'fizetesi_mod']);
+
+        $gepjarmu = Gepjarmu::where('rendszam', $munkalap->gepjarmu_rendszam)->first(['gyartmany', 'tipus', 'tulaj_id']);
+
+        $tulaj = Tulajdonos::where('id', $gepjarmu->tulaj_id)->first(['nev', 'cim']);
+
+        return view('munkafelvevo.munkalapMegtekintes', compact('munkalap', 'gepjarmu', 'tulaj'));
+    }
+
 
 
 }
