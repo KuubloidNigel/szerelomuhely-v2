@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\ListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,15 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/authenticate', 'authenticate')->name('authenticate');
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::post('/logout', 'logout')->name('logout');
+    
+    
+});
+
+
+Route::controller(ListController::class)->group(function(){
+        Route::get('/MunkalapListazas', 'lista')->name('lista');
+        Route::post('/MunkalapListazas', 'ListController@lista')->name('lista');
+        Route::get('/munkalapModositas', 'modosit')->name('modosit');
+        Route::get('/munkalapFelvetel', 'felvetel')->name('felvetel');
+        Route::post('/munkalapFelvetel', 'hozzaadas')->name('hozzaadas');
 });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Szerelo;
+use App\Models\Munkafelvevo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,7 +18,7 @@ class LoginRegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except([
-            'logout', 'dashboard'
+            'logout', 'dashboard', 'lista',
         ]);
     }
 
@@ -51,6 +53,12 @@ class LoginRegisterController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role // Save the role
         ]);
+
+        if($request->role == "szerelo"){
+            Szerelo::create(['nev'=> $request->name, 'azonosito' => $request->azonosito]);
+        } else if($request->role == "munkafelvevo"){
+            Munkafelvevo::create(['nev'=> $request->name, 'azonosito' => $request->azonosito]);
+        }
 
         $credentials = $request->only('azonosito', 'password');
         Auth::attempt($credentials);

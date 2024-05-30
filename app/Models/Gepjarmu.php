@@ -10,7 +10,7 @@ class Gepjarmu extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['idotartam'];
+    protected $fillable = ['rendszam', 'gyartmany', 'tipus', 'tulaj_id'];
 
     public function gepjarmu() : BelongsTo
     {

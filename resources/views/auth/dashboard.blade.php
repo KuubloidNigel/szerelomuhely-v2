@@ -16,10 +16,30 @@
                         You are logged in!
                     </div>       
                 @endif
-                @if (Auth::user()->role == 'szerelo')
+                @if (Auth::user()->role == 'ADMIN')
+                    <p>Welcome, ADMIN!<p>
+                    <h1>Szerelő Oldalai:</h1>
+                    <ul>
+                    <li><a href="{{ URL('/MunkaListazas') }}">Munkalapjaim listátása</a></li>
+                    </ul>
+                    <h1>Munkafelvevő Oldalai:</h1>
+                    <ul>
+                        <li><a href="{{ URL('/munkalapFelvetel') }}">Új munkalap felvevése</a></li>
+                        <li><a href="{{ URL('/MunkalapListazas') }}">Munkalapok listázása</a></li>
+                    </ul>
+                @elseif (Auth::user()->role == 'szerelo')
                     <p>Welcome, Szerelo!</p> 
-                @else
+                    <ul>
+                    <li><a href="{{ URL('/MunkaListazas') }}">Munkalapjaim listázása</a></li>
+                    </ul>
+                @elseif (Auth::user()->role == 'munkafelvevo')
                     <p>Welcome, Munkafelvevo!</p>
+                    <ul>
+                        <li><a href="{{ URL('/munkalapFelvetel') }}">Új munkalap felvevése</a></li>
+                        <li><a href="{{ URL('/MunkalapListazas') }}">Munkalapok listázása</a></li>
+                    </ul>
+                @else
+                    <p>Problem<p>
                 @endif         
             </div>
         </div>
