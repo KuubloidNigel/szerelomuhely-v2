@@ -52,7 +52,11 @@
                     <td>{{ $munkalap->gepjarmu_rendszam }}</td>
                     <td>{{ $munkalap->osszar }}</td>
                     <td>{{ $munkalap->fizetesi_mod }}</td>  
-                    <td><a href = {{ route('modosit', ['id' => $munkalap->id]) }}>Módosítás</a></td>
+                    @if ($munkalap->lezart == 0)
+                        <td><a href = {{ route('modosit', ['id' => $munkalap->id]) }}>Módosítás</a></td>
+                    @else
+                        <td><h6 style="color:red">LEZÁRT</h8></td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

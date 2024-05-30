@@ -101,7 +101,7 @@ class ListController extends Controller
             'fizetesiMod' => 'required|in:kartya,keszpenz',
         ]);
 
-        Munkalap::query()->where('id', $id)->update(['szerelo_azonosito' => $request->szereloAzonosito, 'fizetesi_mod'=> $request->fizetesiMod]);
+        Munkalap::query()->where('id', $id)->update(['szerelo_azonosito' => $request->szereloAzonosito, 'fizetesi_mod'=> $request->fizetesiMod, 'lezart' => $request->lezar]);
 
         return redirect()->route('lista')->with('success', 'Munkalap sikeresen módosítva.');
     }

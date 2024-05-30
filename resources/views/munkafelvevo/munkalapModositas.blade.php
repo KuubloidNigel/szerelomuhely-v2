@@ -8,6 +8,10 @@
     <h1 class="mb-5 text-center">Munkalap</h1>
 
     <input style="display: none;" name ="id" value="{{$munkalap->id}}">
+    <select class="form-select mb-3 @error('fizetesiMod') is-invalid @enderror" aria-label="Default select example" name="lezar">
+        <option selected value="0">NYITVA HAGYÁS</option>
+        <option value="1">LEZÁRÁS</option>
+    </select>
     <div class="form-floating mb-3">
         <input disabled type="text" class="form-control" id="floatingInput1" value="{{ $munkalap->munkafelvevo_azonosito ?? '' }}" name="felvevoNev">
         <label for="floatingInput1">Munkafelvevő azonosító</label>
