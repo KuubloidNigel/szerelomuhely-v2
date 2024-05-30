@@ -11,7 +11,7 @@ class Munkalap extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['lezart,datum,osszar,fizetesi_mod'];
+    protected $fillable = ['szerelo_azonosito, datum, munkafelvevo_azonosito, gepjarmu_rendszam, lezart, osszar, fizetesi_mod'];
 
     public function munkalapMunkalapAnyagok() : BelongsTo
     {

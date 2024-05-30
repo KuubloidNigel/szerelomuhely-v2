@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Munkalap; 
+use App\Models\Gepjarmu;
+use App\Models\Munkafelvevo;
+use App\Models\Tulajdonos;
 use Illuminate\Validation\Rule;   
 
 class ListController extends Controller
@@ -28,9 +31,16 @@ class ListController extends Controller
     public function modosit(Request $request){
         $id = $request->id;
 
-        $munkalap = Munkalap::where('id', '=', $id)->get(['szerelo_azonosito', 'lezart', 'osszar', 'fizetesi_mod']);
+        $munkalap = Munkalap::findOrFail($id);
 
-        return view('munkafelvevo.munkalapModositas', compact('munkalap'));
+        $munkalap = Munkalap::where('id', $id)->first(['id','munkafelvevo_azonosito', 'szerelo_azonosito', 'gepjarmu_rendszam', 'lezart', 'osszar', 'fizetesi_mod']);
+
+        $gepjarmu = Gepjarmu::where('rendszam', $munkalap->gepjarmu_rendszam)->first(['gyartmany', 'tipus', 'tulaj_id']);
+
+        $tulaj = Tulajdonos::where('id', $gepjarmu->tulaj_id)->first(['nev', 'cim']);
+
+        return view('munkafelvevo.munkalapModositas', compact('munkalap', 'gepjarmu', 'tulaj'));
+    
     }
 
     public function felvetel(Request $request){
@@ -40,9 +50,59 @@ class ListController extends Controller
 
     public function hozzaadas(Request $request){
         $request->validate([
-            'felvevoNev' => ['required|string',Rule::exists('munkafelvevos', 'nev')],
-            'szereloAzonosito' => ['required|string|size:6',Rule::exists('szerelos', 'azonosito')],
-            ''
+            'felvevoAzonosito' => ['required', 'string'],
+            'szereloAzonosito'=> ['required', 'string', 'min:6', 'max:6'],
+            'jarmuRendszam' => 'required|string|min:7|max:7',
+            'jarmuGyartmany' => 'required|string|max:30',
+            'jarmuTipus' => 'required|string',
+            'jarmuTulajNev' => 'required|string',
+            'jarmuTulajCim' => 'required|string',
+            'fizetesiMod' => 'required'
         ]);
+
+        if(Tulajdonos::where('cim', $request->jarmuTulajCim)->count() < 1){
+            Tulajdonos::create([
+                'nev' => $request->jarmuTulajNev,
+                'cim' => $request->jarmuTulajCim
+            ]);
+        }
+
+        $tulajID = Tulajdonos::where('cim', $request->jarmuTulajCim)->get('id')->first();
+
+        Gepjarmu::create([
+            'rendszam' => $request->jarmuRendszam,
+            'gyartmany' => $request->jarmuGyartmany,
+            'tipus' => $request->jarmuTipus,
+            "tulaj_id" =>$tulajID["id"]
+        ]);
+
+        Munkalap::query()->insert([
+            "szerelo_azonosito" => $request->szereloAzonosito,
+            "datum" => now()->format('Y-m-d'),
+            "munkafelvevo_azonosito" => $request->felvevoAzonosito,
+            "gepjarmu_rendszam" => $request->jarmuRendszam,
+            "lezart" => 0,
+            "osszar" => 0,
+            "fizetesi_mod" => $request->fizetesiMod ,
+            'created_at'=> now(),
+            'updated_at' =>now()
+        ]);
+
+
+        return redirect()->route('dashboard')->withSuccess('Sikeres Létrehozás!');;
+    }
+
+    public function frissites(Request $request)
+    {
+        $id = $request->id;
+
+        $request->validate([
+            'szereloAzonosito' => 'required|string|size:6|exists:szerelos,azonosito',
+            'fizetesiMod' => 'required|in:kartya,keszpenz',
+        ]);
+
+        Munkalap::query()->where('id', $id)->update(['szerelo_azonosito' => $request->szereloAzonosito, 'fizetesi_mod'=> $request->fizetesiMod]);
+
+        return redirect()->route('lista')->with('success', 'Munkalap sikeresen módosítva.');
     }
 }
