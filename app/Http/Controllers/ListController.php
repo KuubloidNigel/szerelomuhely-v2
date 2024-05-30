@@ -7,22 +7,20 @@ use App\Models\Munkalap;
 use App\Models\Gepjarmu;
 use App\Models\Munkafelvevo;
 use App\Models\Tulajdonos;
-use Illuminate\Validation\Rule;   
 
 class ListController extends Controller
 {
-    public function lista(Request $request) 
-        {
+    public function lista(Request $request){
         $search = $request->input('search');
-        $showZart = $request->input('zart', false);
+        $showZart = $request->input('zarte', false);
 
         $munkalapok= Munkalap::query()
             ->when($search, function ($query, $search) {
-                $query->where('id', 'like', "%{$search}%");
+                $query->where('szerelo_azonosito', 'like', "%{$search}%");
             })        ->when($showZart, function ($query) {
-                $query->where('zart', 1);
-            })
-            ->orderBy('created_at', 'desc')->get();
+                $query->where('lezart', 1);
+            }) 
+            ->orderBy('datum', 'desc')->get();
 
         return view('munkafelvevo.munkalaplista', compact('munkalapok', 'search','showZart'));  
     }

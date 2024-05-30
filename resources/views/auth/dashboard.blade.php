@@ -20,7 +20,7 @@
                     <p>Welcome, ADMIN!<p>
                     <h1>Szerelő Oldalai:</h1>
                     <ul>
-                    <li><a href="{{ URL('/MunkaListazas') }}">Munkalapjaim listátása</a></li>
+                    <li><a href="{{ URL('/MunkaListazas') }}">Munkalapjaim listázása</a></li>
                     </ul>
                     <h1>Munkafelvevő Oldalai:</h1>
                     <ul>

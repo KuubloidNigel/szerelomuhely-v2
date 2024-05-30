@@ -2,19 +2,26 @@
 
 @section('content')
 
+@if (Auth::user()->role == 'szerelo')
+    <script type="text/javascript">
+        window.location.href = "{{ url('/dashboard') }}";
+    </script>
+@endif
+
+
 <div class="container ms-auto me-auto mt-5">
 <form class="ms-auto me-auto mt-5" action="{{ route('lista') }}" method="POST">
     @csrf
         <div class="mb-3">
-            <label for="search">Kereses ID alapjan</label><br>
-            <input type="text" name="search" placeholder="ID" value="{{ request('search') }}">
+            <label for="search">Kereses Szerelő Azonosítója alapjan</label><br>
+            <input type="text" class="form-control" style="width: 100px" name="search" placeholder="ID" value="{{ request('search') }}">
         </div>
         <div class="mb-3">
             <label for="zarte">Csak lezart?</label><br>
-            <input type="checkbox" name="zarte" id="zart" value="1" {{ request('zart') ? 'checked' : '' }}> 
+            <input type="checkbox" name="zarte" id="zart" value="1" {{ request('zarte') ? 'checked' : '' }}> 
         </div>
-        <div class="mb-3"
-            <button style="  background-color: #e7e7e7; border: none; color: white;" type="submit">Kereses</button>
+        <div class="mb-3">
+            <button style="background-color: #e7e7e7; border: none; color: white;" type="submit">Kereses</button>
         </div>
 </form>
 
@@ -27,18 +34,18 @@
 </p>
 
 
-    <table>
+    <table class="table table-light table-striped text-center">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>szerelo_azonosito</th>
-                <th>lezart</th>
-                <th>datum</th>
-                <th>munkafelvelo_azonosito</th>
-                <th>gepjarmu_rendszam</th>
-                <th>osszar</th>
-                <th>fizetesimod</th>
-
+                <th>Szerelő azonosító</th>
+                <th>Lezárt</th>
+                <th>Dátum</th>
+                <th>Munkafelvevő azonosító</th>
+                <th>Gépjármű rendszám</th>
+                <th>Összár</th>
+                <th>Fizetési mód</th>
+                <th> </th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +53,11 @@
                 <tr>
                     <td>{{ $munkalap->id }}</td>
                     <td>{{ $munkalap->szerelo_azonosito }}</td>
-                    <td>{{ $munkalap->lezart }}</td>
+                    @if ($munkalap->lezart == 0)
+                    <td>Nem</td>
+                    @else
+                    <td>Igen</td>
+                    @endif
                     <td>{{ $munkalap->datum }}</td>
                     <td>{{ $munkalap->munkafelvevo_azonosito }}</td>
                     <td>{{ $munkalap->gepjarmu_rendszam }}</td>
@@ -55,7 +66,7 @@
                     @if ($munkalap->lezart == 0)
                         <td><a href = {{ route('modosit', ['id' => $munkalap->id]) }}>Módosítás</a></td>
                     @else
-                        <td><h6 style="color:red">LEZÁRT</h8></td>
+                        <td><h6 style="color:red">LEZÁRT</h6></td>
                     @endif
                 </tr>
             @endforeach
