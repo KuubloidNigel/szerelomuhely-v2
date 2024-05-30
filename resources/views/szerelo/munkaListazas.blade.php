@@ -26,7 +26,7 @@
                     <td>{{ $munkalap->munkafelvevo_azonosito }}</td>
                     <td>{{ $munkalap->gepjarmu_rendszam }}</td>
 
-                    <td><a href={{ route('bovito' , ['id' => $munkalap->id]) }}></a></td>
+                    <td><a href={{ route('bovito' , ['id' => $munkalap->id]) }}>Bővítés</a></td>
 
                 </tr>
                 @endif

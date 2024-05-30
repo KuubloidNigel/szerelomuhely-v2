@@ -120,7 +120,11 @@ class ListController extends Controller
     } 
 
     public function bovito(Request $request){
-        
+        $id = $request->id;
+
+        $munkalap = Munkalap::where('id', '=', $id)->get(['szerelo_azonosito', 'lezart', 'osszar', 'fizetesi_mod']);
+
+        return view('szerelo.munkalapBovites', compact('munkalap'));
     }
 
 
