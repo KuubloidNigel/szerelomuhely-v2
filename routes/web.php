@@ -39,4 +39,6 @@ Route::controller(ListController::class)->group(function(){
         Route::post('/munkalapModositas', 'frissites')->name('frissites');
         Route::get('/MunkaListazas', 'worklist')->name('worklist');
         Route::get('/munkalapBovites', 'bovito')->name('bovito');
+        Route::get('/Bovit', 'bovit')->name('bovit');
+        Route::post('/Bovit', 'adas')->name('adas');
 });

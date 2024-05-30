@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alkatresz;
+use App\Models\Munkafolyamatok;
 use Illuminate\Http\Request;
 use App\Models\Munkalap; 
 use App\Models\Gepjarmu;
-use App\Models\Munkafelvevo;
+use App\Models\Anyag;
+use App\Models\Munkafolyamat;
+use App\Models\MunkalapAlkatresz;
+use App\Models\MunkalapAnyagok;
 use App\Models\Tulajdonos;
 use Illuminate\Support\Facades\Auth;
-
+use Svg\Tag\Rect;
 
 class ListController extends Controller
 {
@@ -120,11 +125,46 @@ class ListController extends Controller
     } 
 
     public function bovito(Request $request){
-        $id = $request->id;
+        $munkalapID = $request->id;
 
-        $munkalap = Munkalap::where('id', '=', $id)->get(['szerelo_azonosito', 'lezart', 'osszar', 'fizetesi_mod']);
+        $munkalapAnyagok = MunkalapAnyagok::query()->where('munkalap_id', $munkalapID)->get();
+        $anyagok = Anyag::query()->whereIn('id', $munkalapAnyagok->pluck('anyag_id'))->get('nev');
+        $munkafolyamat = Munkafolyamat::query()->where('munkalap_id', $munkalapID)->get();
+        $munkaFolyamatok = Munkafolyamatok::query()->whereIn('id', $munkafolyamat->pluck('munkafolyamatok_id'))->get('nev');
 
-        return view('szerelo.munkalapBovites', compact('munkalap'));
+        $alkatresz = MunkalapAlkatresz::query()->where('munkalap_id', $munkalapID)->get();
+        $alkatreszek = Alkatresz::query()->whereIn('id', $alkatresz->pluck('alkatresz_id'))->get('nev');
+
+
+        return view('szerelo.munkalapBovites', compact('munkalapID','munkalapAnyagok','anyagok','munkafolyamat', 'munkaFolyamatok', 'alkatresz' ,'alkatreszek'));
+    }
+
+    public function bovit(Request $request){
+        $fajta = $request->fajta;
+        $munkalapID = $request->munkalapID;
+        if($fajta == 'anyag'){
+            $cucc = Anyag::query()->get('nev');
+        }else if($fajta == 'munka'){
+            $cucc = Munkafolyamatok::query()->get('nev');
+        }else{
+            $cucc = Alkatresz::query()->get('nev');
+        }
+        return view('szerelo.Bovit', compact('fajta', 'munkalapID', "cucc"));
+    }
+
+    public function adas(Request $request){
+        $request->validate([
+            'cucc' => 'required|string',
+            'mennyiseg' => 'required|string'
+        ]);
+
+        if($request->fajta == 'anyag'){
+            Anyag::query()->get('nev');
+        }else if($request->fajta == 'munka'){
+            Munkafolyamatok::query()->get('nev');
+        }else{
+            Alkatresz::query()->get('nev');
+        }
     }
 
 
