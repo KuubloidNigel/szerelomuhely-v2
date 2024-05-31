@@ -42,4 +42,9 @@ Route::controller(ListController::class)->group(function(){
         Route::get('/Bovit', 'bovit')->name('bovit');
         Route::post('/Bovit', 'adas')->name('adas');
         Route::get('/munkalapMegtekintes', 'megtekint')->name('megtekint');
+<<<<<<< HEAD
 });
+=======
+});
+
+>>>>>>> e9e9e9557d7b2a9e526ec16862756d5cdc2878fe
