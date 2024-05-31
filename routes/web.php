@@ -43,3 +43,4 @@ Route::controller(ListController::class)->group(function(){
         Route::post('/Bovit', 'adas')->name('adas');
         Route::get('/munkalapMegtekintes', 'megtekint')->name('megtekint');
 });
+
